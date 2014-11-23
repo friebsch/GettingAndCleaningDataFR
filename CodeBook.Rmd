@@ -1,0 +1,26 @@
+---
+title: "CodeBook"
+output: html_document
+---
+
+
+
+```{r, echo=FALSE}
+str(dtTidy)
+```
+
+```{r, echo=FALSE}
+key(dtTidy)
+```
+
+```{r, echo=FALSE}
+summary(dtTidy)
+```
+
+```{r, echo=FALSE}
+dtTidy[, .N, by=c(names(dtTidy)[grep("^feat", names(dtTidy))])]
+```
+
+
+
+
