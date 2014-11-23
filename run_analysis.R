@@ -17,7 +17,7 @@ if (!file.exists(actualPath)) {
 }
 #download.file(url, file.path(actualPath, f)) and set time. (in my case: "2014-11-22 17:56:59 CET")
 
-#timeDownloaded <- Sys.time()
+timeDownloaded <- Sys.time()
 timeDownloaded
 
 dataPath <- file.path(actualPath, "UCI HAR Dataset")
@@ -34,8 +34,8 @@ fileToDataTable <- function(f) {
     df <- read.table(f)
     dt <- data.table(df)
 }
-xTrain <- fileToDataTable(file.path(pathIn, "train", "X_train.txt"))
-xTest <- fileToDataTable(file.path(pathIn, "test", "X_test.txt"))
+xTrain <- fileToDataTable(file.path(dataPath, "train", "X_train.txt"))
+xTest <- fileToDataTable(file.path(dataPath, "test", "X_test.txt"))
 
 
 #merge Files
@@ -83,6 +83,9 @@ dt <- merge(dt, dtFeatures[, list(featureNum, featureCode, featureName)], by = "
 dt$activity <- factor(dt$activityName)
 dt$feature <- factor(dt$featureName)
 
+
+# i got this part from: https://github.com/friebsch/GettingAndCleaningData/tree/master/Project
+
 grepthis <- function(regex) {
     grepl(regex, dt$feature)
 }
@@ -116,3 +119,5 @@ dtTidy <- dt[, list(count = .N, average = mean(value)), by = key(dt)]
 
 f <- file.path(actualPath, "TidyData.txt")
 write.table(dtTidy, f, quote=FALSE, sep="\t", row.names=FALSE)
+
+knit("Codebook.Rmd", output = "codebook.md", encoding = "ISO8859-1", quiet = TRUE)
